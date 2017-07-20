@@ -6,14 +6,18 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private RssListAdapter adapter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 出力結果をリストビューに表示
-        RssListAdapter adapter = new RssListAdapter(this, R.layout.rss_list_item, rssListItems);
+        adapter = new RssListAdapter(this, R.layout.rss_list_item, rssListItems);
         rssListView.setAdapter(adapter);
     }
 
@@ -63,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
         final AsyncWebAccess asyncWebAccess = new AsyncWebAccess(){
             @Override
             protected void onPostExecute(String result) {
-                Log.d(TAG , result);
+                RssParser rssParser = new RssParser();
+                List<RssListItem> rssListItems = rssParser.parse(result);
+                adapter.update(rssListItems);
             }
         };
         String[] params = {"http://feeds.feedburner.com/hatena/b/hotentry"};

@@ -25,6 +25,12 @@ public class RssListAdapter extends ArrayAdapter<RssListItem> {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public void update(final List<RssListItem> items){
+        this.clear();
+        this.addAll(items);
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
         View view = convertView;
