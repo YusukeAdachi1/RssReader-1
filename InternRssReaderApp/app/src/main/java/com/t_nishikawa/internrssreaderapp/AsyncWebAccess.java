@@ -9,11 +9,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public abstract class AsyncWebAccess extends AsyncTask<String, Void, String>{
+public abstract class AsyncWebAccess extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        if (params.length <= 0){
+        if (params.length <= 0) {
             return "";
         }
         URL url = null;
@@ -22,7 +22,7 @@ public abstract class AsyncWebAccess extends AsyncTask<String, Void, String>{
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        if (url == null){
+        if (url == null) {
             return "";
         }
 
@@ -34,20 +34,20 @@ public abstract class AsyncWebAccess extends AsyncTask<String, Void, String>{
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
 
             String line;
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally{
-            if (reader != null){
+        } finally {
+            if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(connection != null){
+            if (connection != null) {
                 connection.disconnect();
             }
         }

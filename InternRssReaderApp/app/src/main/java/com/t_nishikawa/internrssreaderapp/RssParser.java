@@ -57,7 +57,7 @@ public class RssParser {
                             rssListItem = null;
                             break;
                         case "title":
-                            if (rssListItem != null){
+                            if (rssListItem != null) {
                                 rssListItem.setTitle(text);
                                 text = null;
                             }

@@ -48,23 +48,16 @@ public class MainActivity extends AppCompatActivity {
         requestRss();
     }
 
-    private void initListView(){
-        final ListView rssListView = (ListView)findViewById(R.id.rss_list_view);
+    private void initListView() {
+        final ListView rssListView = (ListView) findViewById(R.id.rss_list_view);
 
-        // リストビューに表示する要素を設定
         final ArrayList<RssListItem> rssListItems = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            RssListItem item = new RssListItem();
-            rssListItems.add(item);
-        }
-
-        // 出力結果をリストビューに表示
         adapter = new RssListAdapter(this, R.layout.rss_list_item, rssListItems);
         rssListView.setAdapter(adapter);
     }
 
-    private void requestRss(){
-        final AsyncWebAccess asyncWebAccess = new AsyncWebAccess(){
+    private void requestRss() {
+        final AsyncWebAccess asyncWebAccess = new AsyncWebAccess() {
             @Override
             protected void onPostExecute(String result) {
                 RssParser rssParser = new RssParser();
