@@ -68,6 +68,12 @@ public class RssParser {
                                 text = null;
                             }
                             break;
+                        case "link":
+                            if (rssListItem != null) {
+                                rssListItem.setUrl(text);
+                                text = null;
+                            }
+                            break;
                     }
                 }
                 eventType = parser.next();

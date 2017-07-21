@@ -4,6 +4,7 @@ public class RssListItem {
 
     private String title;
     private String subText;
+    private String url;
 
     public String getTitle() {
         return title;
@@ -19,5 +20,13 @@ public class RssListItem {
 
     public void setSubText(String subText) {
         this.subText = subText;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
