@@ -4,16 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
         rssListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String msg = position + "番目のアイテムがクリックされました";
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                final ListView listView = (ListView) parent;
+                final RssListItem item = (RssListItem) listView.getItemAtPosition(position);
+                final String url = item.getUrl();
+                ArticleViewerActivity.launchFrom(MainActivity.this, url);
             }
         });
     }
