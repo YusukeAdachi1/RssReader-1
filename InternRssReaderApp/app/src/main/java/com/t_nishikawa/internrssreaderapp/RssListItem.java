@@ -2,11 +2,22 @@ package com.t_nishikawa.internrssreaderapp;
 
 public class RssListItem {
 
+    private String title;
+    private String subText;
+
     public String getTitle() {
-        return "テストタイトル";
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSubText() {
-        return "テストテキスト";
+        return subText;
+    }
+
+    public void setSubText(String subText) {
+        this.subText = subText;
     }
 }

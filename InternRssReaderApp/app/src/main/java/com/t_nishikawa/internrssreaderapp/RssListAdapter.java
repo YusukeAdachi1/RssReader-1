@@ -17,12 +17,18 @@ public class RssListAdapter extends ArrayAdapter<RssListItem> {
     private List<RssListItem> mItems;
     private LayoutInflater mInflater;
 
-    public RssListAdapter(@NonNull final Context context, @LayoutRes final int resource , final List<RssListItem> items) {
+    public RssListAdapter(@NonNull final Context context, @LayoutRes final int resource, final List<RssListItem> items) {
         super(context, resource, items);
 
         mResource = resource;
         mItems = items;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void update(final List<RssListItem> items) {
+        this.clear();
+        this.addAll(items);
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -34,10 +40,10 @@ public class RssListAdapter extends ArrayAdapter<RssListItem> {
 
         final RssListItem item = mItems.get(position);
 
-        final TextView titleText = (TextView)view.findViewById(R.id.titleText);
+        final TextView titleText = (TextView) view.findViewById(R.id.titleText);
         titleText.setText(item.getTitle());
 
-        final TextView subText = (TextView)view.findViewById(R.id.subText);
+        final TextView subText = (TextView) view.findViewById(R.id.subText);
         subText.setText(item.getSubText());
 
         return view;
