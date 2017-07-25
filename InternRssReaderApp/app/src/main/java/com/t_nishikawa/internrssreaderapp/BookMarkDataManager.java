@@ -17,5 +17,13 @@ public interface BookMarkDataManager {
             this.title  = title;
             this.url = url;
         }
+
+        @Override
+        public String toString() {
+            return "BookMarkData{" +
+                    "title='" + title + '\'' +
+                    ", url='" + url + '\'' +
+                    '}';
+        }
     }
 }

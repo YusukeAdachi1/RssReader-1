@@ -24,7 +24,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements BookMarkDataMan
             "CREATE TABLE " + TABLE_BOOK_MARK_DETAILS + "(" +
                     ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     TITLE + " TEXT," +
-                    URL + " TEXT," +
+                    URL + " TEXT" +
                     ")";
 
     public DatabaseManager(Context context) {
@@ -64,8 +64,13 @@ public class DatabaseManager extends SQLiteOpenHelper implements BookMarkDataMan
             do {
                 final String title = c.getString(c.getColumnIndex(TITLE));
                 final String url = c.getString(c.getColumnIndex(URL));
+                if (title == null) {
+                    continue;
+                }
+                if (url == null) {
+                    continue;
+                }
                 BookMarkData bookMarkData = new BookMarkData(title, url);
-
                 bookmarkList.add(bookMarkData);
             } while (c.moveToNext());
         }

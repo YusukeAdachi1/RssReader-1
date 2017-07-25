@@ -24,8 +24,10 @@ public class ArticleViewerActivity extends AppCompatActivity {
     private static final String ArticleTitle = "ARTICLE_TITLE";
     private static final String ArticleUrl = "ARTICLE_URL";
 
-    public static void launchFrom(Activity activity, String url) {
+    public static void launchFrom(Activity activity, String title, String url) {
         Intent intent = new Intent(activity.getApplicationContext(), ArticleViewerActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra(ArticleTitle, title);
         intent.putExtra(ArticleUrl, url);
         activity.startActivity(intent);
     }

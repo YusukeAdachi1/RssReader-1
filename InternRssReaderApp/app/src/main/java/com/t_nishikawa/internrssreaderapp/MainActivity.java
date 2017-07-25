@@ -1,5 +1,7 @@
 package com.t_nishikawa.internrssreaderapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +17,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    public static void launchFrom(Activity activity) {
+        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        activity.startActivity(intent);
+    }
+
     private RssListAdapter adapter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -24,9 +32,8 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     return true;
-                case R.id.navigation_dashboard:
-                    return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_bookmark:
+                    BookMarkActivity.launchFrom(MainActivity.this);
                     return true;
             }
             return false;
@@ -40,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_home);
 
         initListView();
 
@@ -57,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final ListView listView = (ListView) parent;
                 final RssListItem item = (RssListItem) listView.getItemAtPosition(position);
+                final String title = item.getTitle();
                 final String url = item.getUrl();
-                ArticleViewerActivity.launchFrom(MainActivity.this, url);
+                ArticleViewerActivity.launchFrom(MainActivity.this, title, url);
             }
         });
     }
