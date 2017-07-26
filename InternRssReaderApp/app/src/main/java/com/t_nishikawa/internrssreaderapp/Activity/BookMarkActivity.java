@@ -1,4 +1,4 @@
-package com.t_nishikawa.internrssreaderapp;
+package com.t_nishikawa.internrssreaderapp.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.t_nishikawa.internrssreaderapp.BookMarkDataManager;
+import com.t_nishikawa.internrssreaderapp.BookMarkListAdapter;
+import com.t_nishikawa.internrssreaderapp.DatabaseManager;
+import com.t_nishikawa.internrssreaderapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +49,17 @@ public class BookMarkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_mark);
 
+        initBottomNavigationView();
+        initBookMarkList();
+    }
+
+    private void initBottomNavigationView(){
         final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_bookmark);
+    }
 
+    private void initBookMarkList(){
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.book_mark_list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

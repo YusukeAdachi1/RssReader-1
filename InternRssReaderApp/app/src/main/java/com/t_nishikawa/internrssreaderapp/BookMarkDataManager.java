@@ -10,10 +10,10 @@ public interface BookMarkDataManager {
 
 
     class BookMarkData{
-        final String title;
-        final String url;
+        public final String title;
+        public final String url;
 
-        BookMarkData(String title , String url){
+        public BookMarkData(String title, String url){
             this.title  = title;
             this.url = url;
         }

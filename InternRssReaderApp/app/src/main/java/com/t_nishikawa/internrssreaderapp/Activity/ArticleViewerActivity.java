@@ -1,4 +1,4 @@
-package com.t_nishikawa.internrssreaderapp;
+package com.t_nishikawa.internrssreaderapp.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -6,14 +6,18 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import java.util.List;
+import com.t_nishikawa.internrssreaderapp.BookMarkDataManager;
+import com.t_nishikawa.internrssreaderapp.DatabaseManager;
+import com.t_nishikawa.internrssreaderapp.R;
 
 public class ArticleViewerActivity extends AppCompatActivity {
+    private static final String TAG = ArticleViewerActivity.class.getSimpleName();
 
     private WebView articleWebView;
     private BookMarkDataManager bookMarkDataManager;
@@ -66,6 +70,7 @@ public class ArticleViewerActivity extends AppCompatActivity {
                 BookMarkDataManager.BookMarkData bookMarkData = new BookMarkDataManager.BookMarkData(articleTitle, articleUrl);
                 bookMarkDataManager.saveBookMark(bookMarkData);
                 Toast.makeText(v.getContext(), "ブックマークに追加しました。", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "bookmarkListSize:" + bookMarkDataManager.getBookMarkList());
             }
         });
     }

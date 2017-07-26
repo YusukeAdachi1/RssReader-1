@@ -1,4 +1,4 @@
-package com.t_nishikawa.internrssreaderapp;
+package com.t_nishikawa.internrssreaderapp.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.t_nishikawa.internrssreaderapp.AsyncWebAccess;
+import com.t_nishikawa.internrssreaderapp.R;
+import com.t_nishikawa.internrssreaderapp.RssListAdapter;
+import com.t_nishikawa.internrssreaderapp.RssListItem;
+import com.t_nishikawa.internrssreaderapp.RssParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +51,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_home);
-
+        initBottomNavigationView();
         initListView();
 
         requestRss();
+    }
+
+    private void initBottomNavigationView(){
+        final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_home);
     }
 
     private void initListView() {

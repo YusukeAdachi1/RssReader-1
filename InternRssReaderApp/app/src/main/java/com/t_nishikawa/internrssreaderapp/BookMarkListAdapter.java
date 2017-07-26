@@ -40,7 +40,6 @@ public class BookMarkListAdapter extends RecyclerView.Adapter<BookMarkListAdapte
 
     @Override
     public int getItemCount() {
-        Log.d("TAG", String.valueOf(dataset.size()));
         return dataset.size();
     }
 
@@ -65,7 +64,7 @@ public class BookMarkListAdapter extends RecyclerView.Adapter<BookMarkListAdapte
         }
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onClick(View view, BookMarkDataManager.BookMarkData bookMarkData);
     }
 }
