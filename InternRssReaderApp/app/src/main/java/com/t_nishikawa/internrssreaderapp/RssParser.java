@@ -1,7 +1,5 @@
 package com.t_nishikawa.internrssreaderapp;
 
-import android.util.Log;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -27,24 +25,25 @@ public class RssParser {
         }
     }
 
-    public List<RssListItem> parse(String rssData) {
+    public List<RssData> parse(String rssData) {
         if (parser == null) {
             return new ArrayList<>();
         }
 
-        ArrayList<RssListItem> rssListItems = new ArrayList<>();
+        ArrayList<RssData> rssListItems = new ArrayList<>();
         try {
             parser.setInput(new StringReader(rssData));
             int eventType = parser.getEventType();
-            RssListItem rssListItem = null;
+            RssData rssListItem = null;
             String text = null;
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_DOCUMENT) {
+                    //nothing
                 } else if (eventType == XmlPullParser.START_TAG) {
                     final String tagName = parser.getName();
                     switch (tagName) {
                         case "item":
-                            rssListItem = new RssListItem();
+                            rssListItem = new RssData();
                             break;
                     }
                 } else if (eventType == XmlPullParser.TEXT) {
@@ -58,19 +57,19 @@ public class RssParser {
                             break;
                         case "title":
                             if (rssListItem != null) {
-                                rssListItem.setTitle(text);
+                                rssListItem.title = text;
                                 text = null;
                             }
                             break;
                         case "description":
                             if (rssListItem != null) {
-                                rssListItem.setSubText(text);
+                                rssListItem.subText = text;
                                 text = null;
                             }
                             break;
                         case "link":
                             if (rssListItem != null) {
-                                rssListItem.setUrl(text);
+                                rssListItem.url = text;
                                 text = null;
                             }
                             break;

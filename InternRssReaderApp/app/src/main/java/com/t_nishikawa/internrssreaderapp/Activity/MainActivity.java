@@ -6,15 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import com.t_nishikawa.internrssreaderapp.AsyncWebAccess;
 import com.t_nishikawa.internrssreaderapp.R;
+import com.t_nishikawa.internrssreaderapp.RssData;
 import com.t_nishikawa.internrssreaderapp.RssListAdapter;
-import com.t_nishikawa.internrssreaderapp.RssListItem;
 import com.t_nishikawa.internrssreaderapp.RssParser;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
-    private RssListAdapter adapter;
+    private RssListAdapter rssListAdapter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,7 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
         initBottomNavigationView();
         initListView();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         requestRss();
     }
 
@@ -64,21 +69,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListView() {
-        final ListView rssListView = (ListView) findViewById(R.id.rss_list_view);
+        final RecyclerView rssListView = (RecyclerView) findViewById(R.id.rss_list_view);
+        rssListView.setHasFixedSize(true);
+        rssListView.setLayoutManager(new LinearLayoutManager(this));
 
-        final ArrayList<RssListItem> rssListItems = new ArrayList<>();
-        adapter = new RssListAdapter(this, R.layout.rss_list_item, rssListItems);
-        rssListView.setAdapter(adapter);
-
-        rssListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final ListView listView = (ListView) parent;
-                final RssListItem item = (RssListItem) listView.getItemAtPosition(position);
-                final String title = item.getTitle();
-                final String url = item.getUrl();
+        final ArrayList rssListItems = new ArrayList<>();
+        rssListAdapter = new RssListAdapter(rssListItems);
+        rssListAdapter.setOnClickListener(new RssListAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, RssData rssData) {
+                final String title = rssData.title;
+                final String url = rssData.url;
                 ArticleViewerActivity.launchFrom(MainActivity.this, title, url);
             }
         });
+        rssListView.setAdapter(rssListAdapter);
     }
 
     private void requestRss() {
@@ -86,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String result) {
                 RssParser rssParser = new RssParser();
-                List<RssListItem> rssListItems = rssParser.parse(result);
-                adapter.update(rssListItems);
+                List<RssData> rssListItems = rssParser.parse(result);
+                rssListAdapter.updateList(rssListItems);
             }
         };
         String[] params = {"http://feeds.feedburner.com/hatena/b/hotentry"};
