@@ -32,7 +32,7 @@ public class BookMarkListAdapter extends RecyclerView.Adapter<BookMarkListAdapte
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onClickListener.onClick(view, dataset.get(position));
+                    onClickListener.onClick(view, dataset.get(holder.getAdapterPosition()));
                 }
             });
         }

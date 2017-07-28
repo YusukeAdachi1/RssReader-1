@@ -1,51 +1,73 @@
 package com.t_nishikawa.internrssreaderapp;
 
-import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class RssListAdapter extends ArrayAdapter<RssListItem> {
+public class RssListAdapter extends RecyclerView.Adapter<RssListAdapter.ViewHolder> {
 
-    private int mResource;
-    private List<RssListItem> mItems;
-    private LayoutInflater mInflater;
+    private List<RssData> dataset;
+    private OnItemClickListener onItemClickListener;
 
-    public RssListAdapter(@NonNull final Context context, @LayoutRes final int resource, final List<RssListItem> items) {
-        super(context, resource, items);
-
-        mResource = resource;
-        mItems = items;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    public void update(final List<RssListItem> items) {
-        this.clear();
-        this.addAll(items);
-        this.notifyDataSetChanged();
+    public RssListAdapter(List<RssData> dataset) {
+        this.dataset = dataset;
     }
 
     @Override
-    public View getView(final int position, final View convertView, final ViewGroup parent) {
-        View view = convertView;
-        if (convertView == null) {
-            view = mInflater.inflate(mResource, null);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.rss_list_item, parent, false);
+        return new ViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        holder.titleTextView.setText(dataset.get(position).title);
+        holder.subTextView.setText(dataset.get(position).title);
+
+        if (onItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickListener.onClick(view, dataset.get(holder.getAdapterPosition()));
+                }
+            });
         }
+    }
 
-        final RssListItem item = mItems.get(position);
+    @Override
+    public int getItemCount() {
+        return dataset.size();
+    }
 
-        final TextView titleText = (TextView) view.findViewById(R.id.titleText);
-        titleText.setText(item.getTitle());
+    public void setOnClickListener(RssListAdapter.OnItemClickListener onClickListener) {
+        this.onItemClickListener = onClickListener;
+    }
 
-        final TextView subText = (TextView) view.findViewById(R.id.subText);
-        subText.setText(item.getSubText());
+    public void updateList(List<RssData> dataset) {
+        this.dataset.clear();
+        this.dataset.addAll(dataset);
+        this.notifyDataSetChanged();
+    }
 
-        return view;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        View itemView;
+        TextView titleTextView;
+        TextView subTextView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+            this.titleTextView = (TextView) itemView.findViewById(R.id.titleText);
+            this.subTextView = (TextView) itemView.findViewById(R.id.subText);
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onClick(View view, RssData rssData);
     }
 }
