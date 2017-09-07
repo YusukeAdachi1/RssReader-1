@@ -1,7 +1,6 @@
 package com.t_nishikawa.internrssreaderapp;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,13 @@ public class BookMarkListAdapter extends RecyclerView.Adapter<BookMarkListAdapte
                     onClickListener.onClick(view, dataset.get(holder.getAdapterPosition()));
                 }
             });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    onClickListener.onLongClick(view, dataset.get(holder.getAdapterPosition()));
+                    return true; //onLongClick時はonClickイベントを発生させないようにtrue
+                }
+            });
         }
     }
 
@@ -66,5 +72,6 @@ public class BookMarkListAdapter extends RecyclerView.Adapter<BookMarkListAdapte
 
     public interface OnItemClickListener {
         void onClick(View view, BookMarkDataManager.BookMarkData bookMarkData);
+        void onLongClick(View view, BookMarkDataManager.BookMarkData bookMarkData);
     }
 }

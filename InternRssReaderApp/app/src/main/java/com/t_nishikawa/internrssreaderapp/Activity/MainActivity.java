@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.t_nishikawa.internrssreaderapp.AsyncWebAccess;
 import com.t_nishikawa.internrssreaderapp.R;
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         requestRss();
     }
 
-    private void initBottomNavigationView(){
+    private void initBottomNavigationView() {
         final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);

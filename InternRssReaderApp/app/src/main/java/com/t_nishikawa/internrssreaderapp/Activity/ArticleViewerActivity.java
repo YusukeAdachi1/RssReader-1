@@ -3,9 +3,9 @@ package com.t_nishikawa.internrssreaderapp.Activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -22,15 +22,22 @@ public class ArticleViewerActivity extends AppCompatActivity {
     private WebView articleWebView;
     private BookMarkDataManager bookMarkDataManager;
 
+    private String articleId;
     private String articleTitle;
     private String articleUrl;
 
+    private static final String ArticleID = "ARTICLE_ID";
     private static final String ArticleTitle = "ARTICLE_TITLE";
     private static final String ArticleUrl = "ARTICLE_URL";
 
     public static void launchFrom(Activity activity, String title, String url) {
+        ArticleViewerActivity.launchFrom(activity , null , title , url);
+    }
+
+    public static void launchFrom(Activity activity, String id, String title, String url) {
         Intent intent = new Intent(activity.getApplicationContext(), ArticleViewerActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra(ArticleID, id);
         intent.putExtra(ArticleTitle, title);
         intent.putExtra(ArticleUrl, url);
         activity.startActivity(intent);
@@ -47,6 +54,8 @@ public class ArticleViewerActivity extends AppCompatActivity {
         initBookMarkButton();
 
         final Intent receiveIntent = getIntent();
+
+        articleId = receiveIntent.getStringExtra(ArticleID);
         articleTitle = receiveIntent.getStringExtra(ArticleTitle);
         articleUrl = receiveIntent.getStringExtra(ArticleUrl);
 
@@ -67,7 +76,7 @@ public class ArticleViewerActivity extends AppCompatActivity {
         bookMarkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BookMarkDataManager.BookMarkData bookMarkData = new BookMarkDataManager.BookMarkData(articleTitle, articleUrl);
+                BookMarkDataManager.BookMarkData bookMarkData = new BookMarkDataManager.BookMarkData(articleId, articleTitle, articleUrl);
                 bookMarkDataManager.saveBookMark(bookMarkData);
                 Toast.makeText(v.getContext(), "ブックマークに追加しました。", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "bookmarkListSize:" + bookMarkDataManager.getBookMarkList());

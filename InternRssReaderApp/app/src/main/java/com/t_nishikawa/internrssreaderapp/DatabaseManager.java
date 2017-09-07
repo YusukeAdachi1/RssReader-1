@@ -54,14 +54,27 @@ public class DatabaseManager extends SQLiteOpenHelper implements BookMarkDataMan
     }
 
     @Override
+    public void deleteBookMark(BookMarkData bookMarkData) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TITLE, bookMarkData.title);
+        values.put(URL, bookMarkData.url);
+
+        db.delete(TABLE_BOOK_MARK_DETAILS, ID + "=?", new String[]{bookMarkData.id});
+        db.close();
+    }
+
+    @Override
     public List<BookMarkData> getBookMarkList() {
-        ArrayList bookmarkList = new ArrayList();
+        List bookmarkList = new ArrayList();
 
         final String selectQuery = String.format("SELECT * FROM %s", TABLE_BOOK_MARK_DETAILS);
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
         if (c.moveToFirst()) {
             do {
+                final String id = c.getString(c.getColumnIndex(ID));
                 final String title = c.getString(c.getColumnIndex(TITLE));
                 final String url = c.getString(c.getColumnIndex(URL));
                 if (title == null) {
@@ -70,7 +83,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements BookMarkDataMan
                 if (url == null) {
                     continue;
                 }
-                BookMarkData bookMarkData = new BookMarkData(title, url);
+                BookMarkData bookMarkData = new BookMarkData(id, title, url);
                 bookmarkList.add(bookMarkData);
             } while (c.moveToNext());
         }

@@ -28,6 +28,7 @@ public class BookMarkActivity extends AppCompatActivity {
     }
 
     private BookMarkListAdapter bookMarkListAdapter;
+    private BookMarkDataManager bookMarkDataManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,13 +54,13 @@ public class BookMarkActivity extends AppCompatActivity {
         initBookMarkList();
     }
 
-    private void initBottomNavigationView(){
+    private void initBottomNavigationView() {
         final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_bookmark);
     }
 
-    private void initBookMarkList(){
+    private void initBookMarkList() {
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.book_mark_list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,7 +70,16 @@ public class BookMarkActivity extends AppCompatActivity {
         bookMarkListAdapter.setOnClickListener(new BookMarkListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, BookMarkDataManager.BookMarkData bookMarkData) {
-                ArticleViewerActivity.launchFrom(BookMarkActivity.this, bookMarkData.title, bookMarkData.url);
+                ArticleViewerActivity.launchFrom(BookMarkActivity.this, bookMarkData.id, bookMarkData.title, bookMarkData.url);
+            }
+
+            @Override
+            public void onLongClick(View view, BookMarkDataManager.BookMarkData bookMarkData) {
+                bookMarkDataManager.deleteBookMark(bookMarkData);
+
+                bookMarkDataManager = new DatabaseManager(getApplicationContext());
+                List<BookMarkDataManager.BookMarkData> list = bookMarkDataManager.getBookMarkList();
+                bookMarkListAdapter.updateList(list);
             }
         });
         mRecyclerView.setAdapter(bookMarkListAdapter);
@@ -79,7 +89,7 @@ public class BookMarkActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        BookMarkDataManager bookMarkDataManager = new DatabaseManager(getApplicationContext());
+        bookMarkDataManager = new DatabaseManager(getApplicationContext());
         List<BookMarkDataManager.BookMarkData> list = bookMarkDataManager.getBookMarkList();
         bookMarkListAdapter.updateList(list);
     }

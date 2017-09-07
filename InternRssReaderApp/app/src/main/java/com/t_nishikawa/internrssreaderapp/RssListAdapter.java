@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -54,7 +55,8 @@ public class RssListAdapter extends RecyclerView.Adapter<RssListAdapter.ViewHold
         this.notifyDataSetChanged();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
         View itemView;
         TextView titleTextView;
         TextView subTextView;
@@ -62,8 +64,15 @@ public class RssListAdapter extends RecyclerView.Adapter<RssListAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
+            this.itemView.setOnLongClickListener(this);
             this.titleTextView = (TextView) itemView.findViewById(R.id.titleText);
             this.subTextView = (TextView) itemView.findViewById(R.id.subText);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            Toast.makeText(itemView.getContext(), "長押し", Toast.LENGTH_SHORT).show();
+            return true;
         }
     }
 
