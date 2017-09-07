@@ -59,6 +59,10 @@ public class BookMarkListAdapter extends RecyclerView.Adapter<BookMarkListAdapte
         this.notifyDataSetChanged();
     }
 
+    public BookMarkDataManager.BookMarkData getItem(int pos) {
+        return this.dataset.get(pos);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         View itemView;
         TextView textView;
@@ -72,6 +76,7 @@ public class BookMarkListAdapter extends RecyclerView.Adapter<BookMarkListAdapte
 
     public interface OnItemClickListener {
         void onClick(View view, BookMarkDataManager.BookMarkData bookMarkData);
+
         void onLongClick(View view, BookMarkDataManager.BookMarkData bookMarkData);
     }
 }
